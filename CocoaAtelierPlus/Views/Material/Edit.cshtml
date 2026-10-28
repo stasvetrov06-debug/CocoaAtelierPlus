@@ -1,0 +1,71 @@
+@model CocoaAtelierPlus.Models.MaterialForm
+@{
+    ViewData["Title"] = Model.MaterialId.HasValue ? "Редактирование материала" : "Добавление материала";
+}
+
+<nav class="mb-3">
+    <a asp-controller="Material" asp-action="Index" class="back-link">&larr; Назад к списку материалов</a>
+</nav>
+
+<h1 class="section-title">@ViewData["Title"]</h1>
+
+<div class="form-card">
+    <form asp-controller="Material" asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="MaterialId" />
+
+        <div class="mb-3">
+            <label asp-for="MaterialTypeId" class="form-label"></label>
+            <select asp-for="MaterialTypeId" class="form-select" asp-items="@(new SelectList(Model.Types, "MaterialTypeId", "Name"))">
+                <option value="0">-- выберите тип материала --</option>
+            </select>
+            <span asp-validation-for="MaterialTypeId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" placeholder="Например: Какао-масса Ecuador 70%" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="UnitPrice" class="form-label"></label>
+                <input asp-for="UnitPrice" class="form-control" placeholder="Например: 2150,00" />
+                <span asp-validation-for="UnitPrice" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Unit" class="form-label"></label>
+                <input asp-for="Unit" class="form-control" placeholder="Например: кг" />
+                <span asp-validation-for="Unit" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label asp-for="PackQty" class="form-label"></label>
+                <input asp-for="PackQty" class="form-control" placeholder="Например: 25" />
+                <span asp-validation-for="PackQty" class="text-danger"></span>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="StockQty" class="form-label"></label>
+                <input asp-for="StockQty" class="form-control" placeholder="Например: 240" />
+                <span asp-validation-for="StockQty" class="text-danger"></span>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="MinQty" class="form-label"></label>
+                <input asp-for="MinQty" class="form-control" placeholder="Например: 80" />
+                <span asp-validation-for="MinQty" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-accent">Сохранить</button>
+            <a asp-controller="Material" asp-action="Index" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

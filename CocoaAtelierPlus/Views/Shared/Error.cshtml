@@ -1,0 +1,21 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Ошибка";
+}
+
+<h1 class="section-title">Ошибка</h1>
+<p class="material-subtitle">При обработке запроса произошла непредвиденная ошибка.</p>
+
+<div class="form-card">
+    <p>
+        Попробуйте обновить страницу. Если ошибка повторяется, обратитесь к администратору системы
+        и сообщите идентификатор запроса.
+    </p>
+
+    @if (Model.ShowRequestId)
+    {
+        <p class="mb-0">
+            <strong>Идентификатор запроса:</strong> <code>@Model.RequestId</code>
+        </p>
+    }
+</div>

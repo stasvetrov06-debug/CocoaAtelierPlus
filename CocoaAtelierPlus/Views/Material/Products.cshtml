@@ -1,0 +1,41 @@
+@model List<CocoaAtelierPlus.Models.ProductItem>
+@{
+    ViewData["Title"] = "Продукция по материалу";
+    var materialName = ViewBag.MaterialName as string ?? string.Empty;
+}
+
+<nav class="mb-3">
+    <a asp-controller="Material" asp-action="Index" class="back-link">&larr; Назад к списку материалов</a>
+</nav>
+
+<h1 class="section-title">Продукция, в составе которой используется материал</h1>
+<p class="material-subtitle">Материал: <strong>@materialName</strong></p>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        Данный материал не используется в рецептурах продукции. Добавьте его в состав продукции.
+    </div>
+}
+else
+{
+    <div class="table-card">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Наименование продукции</th>
+                    <th class="text-end">Необходимое количество материала</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td class="text-end">@item.QtyPerUnit.ToString("0.###")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

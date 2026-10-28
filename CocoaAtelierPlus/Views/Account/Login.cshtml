@@ -1,0 +1,31 @@
+@model CocoaAtelierPlus.Models.LoginModel
+@{
+    ViewData["Title"] = "Вход в систему";
+}
+
+<div class="login-wrap">
+    <div class="login-card">
+        <img src="~/images/logo.png" alt="Cocoa Atelier Plus" class="login-logo" />
+        <h1 class="login-title">Cocoa Atelier Plus</h1>
+        <p class="login-subtitle">Система учета материалов</p>
+
+        <form asp-controller="Account" asp-action="Login" method="post">
+            @Html.AntiForgeryToken()
+            <div class="mb-3">
+                <label asp-for="Login" class="form-label"></label>
+                <input asp-for="Login" class="form-control" placeholder="Введите логин" autofocus />
+                <span asp-validation-for="Login" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" placeholder="Введите пароль" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-accent w-100">Войти</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

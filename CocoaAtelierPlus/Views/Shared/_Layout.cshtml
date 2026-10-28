@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Учет материалов</title>
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" asp-controller="Material" asp-action="Index">
+                    <img src="~/images/logo.png" alt="Cocoa Atelier Plus" class="brand-logo" />
+                    <span class="ms-2">Cocoa Atelier Plus</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Material" asp-action="Index">Материалы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Supplier" asp-action="Index">Поставщики</a>
+                        </li>
+                        @if (Context.Session.GetString("Role") == "Администратор")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="User" asp-action="Index">Пользователи</a>
+                            </li>
+                        }
+                    </ul>
+                    @if (!string.IsNullOrEmpty(Context.Session.GetString("Login")))
+                    {
+                        <div class="d-flex align-items-center">
+                            <span class="navbar-text me-3">
+                                @Context.Session.GetString("FullName") (@Context.Session.GetString("Role"))
+                            </span>
+                            <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline-accent btn-sm">Выйти</button>
+                            </form>
+                        </div>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        @if (TempData["MessageText"] != null)
+        {
+            var type = TempData["MessageType"] as string ?? "info";
+            var alertClass = type switch
+            {
+                "error" => "alert-danger",
+                "warning" => "alert-warning",
+                _ => "alert-info"
+            };
+            var icon = type switch
+            {
+                "error" => "✕",
+                "warning" => "!",
+                _ => "i"
+            };
+            <div class="alert @alertClass alert-dismissible fade show" role="alert">
+                <span class="alert-icon-badge @type">@icon</span>
+                <strong>@TempData["MessageTitle"].</strong> @TempData["MessageText"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+            </div>
+        }
+
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - Cocoa Atelier Plus
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,61 @@
+@model CocoaAtelierPlus.Models.SupplierForm
+@{
+    ViewData["Title"] = Model.SupplierId.HasValue ? "Редактирование поставщика" : "Добавление поставщика";
+}
+
+<nav class="mb-3">
+    <a asp-controller="Supplier" asp-action="Index" class="back-link">&larr; Назад к списку поставщиков</a>
+</nav>
+
+<h1 class="section-title">@ViewData["Title"]</h1>
+
+<div class="form-card">
+    <form asp-controller="Supplier" asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="SupplierId" />
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label asp-for="SupplierType" class="form-label"></label>
+                <select asp-for="SupplierType" class="form-select">
+                    <option value="ООО">ООО</option>
+                    <option value="ИП">ИП</option>
+                    <option value="АО">АО</option>
+                </select>
+                <span asp-validation-for="SupplierType" class="text-danger"></span>
+            </div>
+            <div class="col-md-8 mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="Например: КакаоТрейд" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label asp-for="Inn" class="form-label"></label>
+                <input asp-for="Inn" class="form-control" placeholder="10 или 12 цифр" />
+                <span asp-validation-for="Inn" class="text-danger"></span>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="Rating" class="form-label"></label>
+                <input asp-for="Rating" class="form-control" min="1" max="5" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="StartDate" class="form-label"></label>
+                <input asp-for="StartDate" class="form-control" placeholder="ДД.ММ.ГГГГ" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-accent">Сохранить</button>
+            <a asp-controller="Supplier" asp-action="Index" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

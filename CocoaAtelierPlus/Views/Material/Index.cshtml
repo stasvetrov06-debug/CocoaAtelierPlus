@@ -1,0 +1,66 @@
+@model List<CocoaAtelierPlus.Models.Material>
+@{
+    ViewData["Title"] = "Список материалов";
+    var canEdit = ViewBag.CanEdit as bool? ?? false;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="section-title mb-0">Материалы</h1>
+    @if (canEdit)
+    {
+        <a class="btn btn-accent" asp-controller="Material" asp-action="Create">Добавить материал</a>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        Список материалов пуст. Нажмите «Добавить материал», чтобы создать первую запись.
+    </div>
+}
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card material-card h-100">
+                <div class="card-header">
+                    <span class="material-type">@item.MaterialTypeName</span>
+                    <span class="material-unit">@item.Unit</span>
+                </div>
+                <div class="card-body">
+                    <h5 class="material-name">
+                        @if (canEdit)
+                        {
+                            <a asp-controller="Material" asp-action="Edit" asp-route-id="@item.MaterialId">@item.Name</a>
+                        }
+                        else
+                        {
+                            @item.Name
+                        }
+                    </h5>
+                    <dl class="material-fields">
+                        <dt>Минимальное количество</dt>
+                        <dd>@item.MinQty.ToString("0.###") @item.Unit</dd>
+                        <dt>Количество на складе</dt>
+                        <dd>@item.StockQty.ToString("0.###") @item.Unit</dd>
+                        <dt>Закупочная цена</dt>
+                        <dd>@item.UnitPrice.ToString("0.00") руб. / @item.Unit</dd>
+                        <dt>Стоимость минимальной партии</dt>
+                        <dd class="@(item.MinBatchCost > 0 ? "cost-warning" : "cost-ok")">
+                            @item.MinBatchCost.ToString("0.00") руб.
+                        </dd>
+                        <dt>Требуемое количество по рецептурам</dt>
+                        <dd>@item.RequiredQty.ToString("0.###") @item.Unit</dd>
+                    </dl>
+                </div>
+                <div class="card-footer">
+                    <a class="btn btn-outline-accent btn-sm"
+                       asp-controller="Material" asp-action="Products" asp-route-id="@item.MaterialId">Продукция</a>
+                    <a class="btn btn-outline-accent btn-sm"
+                       asp-controller="Material" asp-action="Suppliers" asp-route-id="@item.MaterialId">Поставщики</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

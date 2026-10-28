@@ -1,0 +1,68 @@
+@model CocoaAtelierPlus.Models.UserForm
+@{
+    ViewData["Title"] = Model.UserId.HasValue ? "Редактирование пользователя" : "Добавление пользователя";
+}
+
+<nav class="mb-3">
+    <a asp-controller="User" asp-action="Index" class="back-link">&larr; Назад к списку пользователей</a>
+</nav>
+
+<h1 class="section-title">@ViewData["Title"]</h1>
+
+<div class="form-card">
+    <form asp-controller="User" asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="UserId" />
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="Login" class="form-label"></label>
+                <input asp-for="Login" class="form-control" placeholder="Например: user03" />
+                <span asp-validation-for="Login" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="FullName" class="form-label"></label>
+                <input asp-for="FullName" class="form-control" placeholder="Фамилия Имя Отчество" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" placeholder="name@cocoa-plus.ru" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="RoleId" class="form-label"></label>
+                <select asp-for="RoleId" class="form-select" asp-items="@(new SelectList(Model.Roles, "RoleId", "Name"))">
+                    <option value="0">-- выберите роль --</option>
+                </select>
+                <span asp-validation-for="RoleId" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3 d-flex align-items-end">
+                <div class="form-check mb-3">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-accent">Сохранить</button>
+            <a asp-controller="User" asp-action="Index" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

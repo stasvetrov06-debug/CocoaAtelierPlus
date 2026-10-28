@@ -1,0 +1,63 @@
+@model List<CocoaAtelierPlus.Models.SupplierForm>
+@{
+    ViewData["Title"] = "Поставщики";
+    var canManage = ViewBag.CanManage as bool? ?? false;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="section-title mb-0">Поставщики</h1>
+    @if (canManage)
+    {
+        <a class="btn btn-accent" asp-controller="Supplier" asp-action="Create">Добавить поставщика</a>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">Список поставщиков пуст.</div>
+}
+else
+{
+    <div class="table-card">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Тип</th>
+                    <th>Наименование</th>
+                    <th>ИНН</th>
+                    <th>Рейтинг</th>
+                    <th>Дата начала работы</th>
+                    @if (canManage)
+                    {
+                        <th class="text-end">Действия</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.SupplierType</td>
+                        <td>@item.Name</td>
+                        <td>@item.Inn</td>
+                        <td><span class="rating-badge">@item.Rating</span></td>
+                        <td>@item.StartDate</td>
+                        @if (canManage)
+                        {
+                            <td class="text-end">
+                                <a class="btn btn-outline-accent btn-sm"
+                                   asp-controller="Supplier" asp-action="Edit" asp-route-id="@item.SupplierId">Изменить</a>
+                                <form asp-controller="Supplier" asp-action="Delete" asp-route-id="@item.SupplierId"
+                                      method="post" class="d-inline delete-form">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                                </form>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
